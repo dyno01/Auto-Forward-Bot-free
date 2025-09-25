@@ -1,11 +1,10 @@
-FROM python:3.8-slim-buster
+FROM python:3.11-slim
 
 WORKDIR /fwdbot
 
 RUN apt-get update && apt-get install -y git \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy everything at once
 COPY . /fwdbot/
 
 RUN pip install --no-cache-dir -U pip \
