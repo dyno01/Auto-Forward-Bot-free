@@ -1,19 +1,20 @@
-FROM python:3.8-slim-buster
-
-# Point apt sources to Debian archive since buster is EOL
-RUN sed -i 's|deb.debian.org|archive.debian.org|g' /etc/apt/sources.list \
-    && sed -i '/security.debian.org/d' /etc/apt/sources.list \
-    && apt-get update \
-    && apt-get install -y git \
-    && rm -rf /var/lib/apt/lists/*
-
-COPY requirements.txt /requirements.txt
-
-RUN pip install --no-cache-dir -U pip \
-    && pip install --no-cache-dir -r /requirements.txt
-
+# Set working directory
 WORKDIR /fwdbot
-COPY start.sh /start.sh
-RUN chmod +x /start.sh
 
-CMD ["/bin/bash", "/start.sh"]
+# Copy bot code
+COPY main.py /fwdbot/
+# If you have other modules/folders:
+COPY utils/ /fwdbot/utils/
+COPY config.py /fwdbot/
+
+# Copy start.sh
+COPY start.sh /fwdbot/
+RUN chmod +x /fwdbot/start.sh
+
+# Install dependencies
+COPY requirements.txt /fwdbot/
+RUN pip install --no-cache-dir -U pip \
+    && pip install --no-cache-dir -r requirements.txt
+
+# Command to start bot
+CMD ["/fwdbot/start.sh"]
