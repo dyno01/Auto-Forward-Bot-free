@@ -1,5 +1,11 @@
 #!/bin/bash
+# start.sh
+
+# Exit immediately if a command fails
 set -e
+
+# Optional: print commands in logs
 set -x
 
-python3 bot.py
+# Run the bot in the foreground
+python3 /fwdbot/main.py
